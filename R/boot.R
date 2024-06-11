@@ -49,8 +49,7 @@ fect.boot <- function(Y,
                       group.level = NULL,
                       group = NULL,
                       dis = TRUE) {
-    
-    
+  
     na.pos <- NULL
     TT <- dim(Y)[1]
     N <- dim(Y)[2]
@@ -443,7 +442,7 @@ fect.boot <- function(Y,
                               balance.avg.att = NA, balance.time = NA,group.output = list())
                 return(boot0)
             } else {
-                return(boot)
+                return(list(boot=boot, Y.boot=Y.boot))
             }
 
         }
@@ -800,7 +799,7 @@ fect.boot <- function(Y,
                 return(boot0)
             }
             else{
-                return(boot)
+                return(list(boot=boot, Y.boot=Y.boot))
             }
         }
     } 
@@ -1064,7 +1063,7 @@ fect.boot <- function(Y,
                                   att.off.W = NA, count.off.W = NA, time.off.W = NA, att.carryover.W = NA)
                     return(boot0)
                 } else {
-                    return(boot)
+                    return(list(boot=boot, Y.boot=Y[, boot.id]))
                 }
             }            
         }
@@ -1089,8 +1088,11 @@ fect.boot <- function(Y,
                             ) %dopar% {
                                 return(one.nonpara(boot.seq[j]))
                             }
-
+        Y.boot.list<-list()
+        
         for (j in 1:nboots) { 
+            Y.boot.list[[j]]<-boot.out[[j]]$Y.boot
+            boot.out[[j]]<-boot.out[[j]]$boot
             att.avg.boot[,j] <- boot.out[[j]]$att.avg
             att.avg.unit.boot[, j] <- boot.out[[j]]$att.avg.unit
             att.boot[,j] <- boot.out[[j]]$att
@@ -1180,8 +1182,12 @@ fect.boot <- function(Y,
                              style = 3,    
                              width = 50,   
                              char = "=")
+        Y.boot.list <- list() 
+        
         for (j in 1:nboots) { 
-            boot <- one.nonpara(boot.seq[j]) 
+            boot <- one.nonpara(boot.seq[j])
+            Y.boot.list[[j]]<-boot$Y.boot
+            boot<-boot$boot
             att.avg.boot[,j] <- boot$att.avg
             att.avg.unit.boot[,j] <- boot$att.avg.unit
             att.boot[,j] <- boot$att
@@ -2199,6 +2205,7 @@ fect.boot <- function(Y,
 
     ##storage
     result<-list(est.avg = est.avg,
+                 Y.boot = Y.boot.list,
                  att.avg.boot = att.avg.boot,
                  est.avg.unit = est.avg.unit,
                  att.avg.unit.boot = att.avg.unit.boot,
