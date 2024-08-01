@@ -1063,7 +1063,7 @@ fect.boot <- function(Y,
                                   att.off.W = NA, count.off.W = NA, time.off.W = NA, att.carryover.W = NA)
                     return(boot0)
                 } else {
-                    return(list(boot=boot, Y.boot=Y[, boot.id]))
+                    return(list(boot=boot, Y.boot=Y[, boot.id], boot.id=boot.id))
                 }
             }            
         }
@@ -1089,8 +1089,10 @@ fect.boot <- function(Y,
                                 return(one.nonpara(boot.seq[j]))
                             }
         Y.boot.list<-list()
+        boot.ids<- list()
         
         for (j in 1:nboots) { 
+            boot.ids[[j]]<-boot.out[[j]]$boot.id
             Y.boot.list[[j]]<-boot.out[[j]]$Y.boot
             boot.out[[j]]<-boot.out[[j]]$boot
             att.avg.boot[,j] <- boot.out[[j]]$att.avg

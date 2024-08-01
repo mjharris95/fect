@@ -112,7 +112,7 @@ diagtest <- function(
         }
 
         # TOST
-        est.att <- x$pre.est.att[,c(1:2)]
+        est.att <- x$pre.est.att[,c(1, 2)] # changed to recalculated values, was c(1,2)
         tost.equiv.p <- sapply(1:nrow(est.att), function(i){
                         return(tost(est.att[i,1], est.att[i,2], c(-tost.threshold, tost.threshold)))
                     }) # keep the maximum p value
@@ -185,7 +185,7 @@ diagtest <- function(
 
         # TOST
 
-        est.att <- x$est.att[,c(1:2)]
+        est.att <- x$est.att[,c(1,2)] 
         pos.zero <- which(x$time == 0)
         est.att <- est.att[pre.pos,,drop = FALSE]
         if(dim(est.att)[1]>0){
