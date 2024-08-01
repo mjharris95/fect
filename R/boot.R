@@ -2208,6 +2208,7 @@ fect.boot <- function(Y,
     ##storage
     result<-list(est.avg = est.avg,
                  Y.boot = Y.boot.list,
+                 boot.ids=boot.ids,
                  att.avg.boot = att.avg.boot,
                  est.avg.unit = est.avg.unit,
                  att.avg.unit.boot = att.avg.unit.boot,
